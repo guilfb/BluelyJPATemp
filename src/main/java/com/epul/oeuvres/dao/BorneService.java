@@ -8,8 +8,6 @@ import java.util.List;
 
 public class BorneService extends EntityService {
 
-	/* Lister les adherents
-	 * */
 	public List<BorneEntity> consulterListeBornes() throws MonException {
 		List<BorneEntity> mesBornes = null;
 		try
@@ -29,8 +27,25 @@ public class BorneService extends EntityService {
 		return mesBornes;
 	}
 
-	/* Consultation d'une adherent par son numéro
-	*/
+	public List<BorneEntity> consulterListeBornesParStation(int numero) throws MonException {
+		List<BorneEntity> mesBornes = null;
+		try
+		{
+			EntityTransaction transac = startTransaction();
+			transac.begin();
+			mesBornes = (List<BorneEntity>)
+					entitymanager.createQuery(
+							"SELECT a FROM BorneEntity a " +
+									"WHERE a.station="+numero).getResultList();
+			entitymanager.close();
+		}catch (RuntimeException e) {
+			new MonException("Erreur de lecture", e.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mesBornes;
+	}
+
 	public BorneEntity consulterBorneById(int numero) throws MonException {
 		List<BorneEntity> mesBornes = null;
 		BorneEntity borne = new BorneEntity();

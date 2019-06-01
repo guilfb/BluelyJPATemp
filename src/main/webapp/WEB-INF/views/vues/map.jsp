@@ -53,6 +53,7 @@
 			maxZoom: 19
 		});
 		map.addLayer(osmLayer);
+		/*
 		var LeafIcon = L.Icon.extend({
 			options: {
 				iconSize:     [30, 30],
@@ -61,14 +62,21 @@
 			}
 		});
 		var testIcon = new LeafIcon({iconUrl: './../../resources/images/popup.png'});
-
+        */
 		jQuery.ajax({
 			type: 'POST',
 			url: 'afficherStation.htm',
 			success: function (result) {
 				result.forEach(function (value) {
-					var marker = L.marker([value.latitude, value.longitude], {icon: testIcon}).addTo(map)
-							.bindPopup("; " + value.latitude + " ; " + value.longitude + " ;").openPopup();
+
+					var marker = L.marker([value.latitude, value.longitude]
+                        //, {icon: testIcon}
+                        ).addTo(map)
+							.bindPopup(
+							    '<div>' +
+                                    '<p>'+value.numero+', '+value.adresse+'</p>' +
+                                    '<p>'+value.codePostal+', '+value.ville+'</p>' +
+                                '</div>');
 				});
 			}
 		});

@@ -2,8 +2,10 @@ package com.epul.oeuvres.controle;
 
 
 
+import com.epul.oeuvres.dao.BorneService;
 import com.epul.oeuvres.dao.StationService;
 import com.epul.oeuvres.meserreurs.MonException;
+import com.epul.oeuvres.metier.BorneEntity;
 import com.epul.oeuvres.metier.StationEntity;
 
 import org.springframework.stereotype.Controller;
@@ -33,7 +35,8 @@ public class StationControleur {
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 
-			StationService stationService = new StationService();
+            StationService stationService = new StationService();
+            BorneService borneService = new BorneService();
 
             List<StationEntity> listeStations = stationService.consulterListeStations();
 
@@ -45,6 +48,13 @@ public class StationControleur {
                 objectBuilder.add("numero", station.getNumero());
                 objectBuilder.add("ville", station.getVille());
                 objectBuilder.add("codePostal", station.getCodePostal());
+
+                /*
+                List<BorneEntity> listeBorne = borneService.consulterListeBornesParStation(station.getIdStation());
+                for(BorneEntity borne : listeBorne) {
+                    // RUN TEST HERE
+                }
+                */
 
                 arrayBuilder.add(objectBuilder);
                 objectBuilder = Json.createObjectBuilder();

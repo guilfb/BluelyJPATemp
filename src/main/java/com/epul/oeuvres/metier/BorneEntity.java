@@ -8,6 +8,8 @@ import java.util.Objects;
 public class BorneEntity {
     private int idBorne;
     private byte etatBorne;
+    private int station;
+    private int vehicule;
 
     @Id
     @Column(name = "idBorne")
@@ -27,6 +29,26 @@ public class BorneEntity {
 
     public void setEtatBorne(byte etatBorne) {
         this.etatBorne = etatBorne;
+    }
+
+    @Basic
+    @Column(name = "station")
+    public int getStation() {
+        return station;
+    }
+
+    public void setStation(int station) {
+        this.station = station;
+    }
+
+    @Basic
+    @Column(name = "idVehicule")
+    public int getVehicule() {
+        return vehicule;
+    }
+
+    public void setVehicule(int vehicule) {
+        this.vehicule = vehicule;
     }
 
     @Override
