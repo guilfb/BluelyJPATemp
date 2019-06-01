@@ -1,13 +1,11 @@
 package com.epul.oeuvres.controle;
 
 
-
 import com.epul.oeuvres.dao.BorneService;
 import com.epul.oeuvres.dao.StationService;
 import com.epul.oeuvres.meserreurs.MonException;
 import com.epul.oeuvres.metier.BorneEntity;
 import com.epul.oeuvres.metier.StationEntity;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,31 +20,23 @@ import java.util.List;
 
 
 @Controller
-public class StationControleur {
+public class BorneControleur {
 
-    @RequestMapping(value = "map.htm", method = RequestMethod.GET)
-    public ModelAndView Afficheindex(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return new ModelAndView("vues/map");
-    }
-
-	@RequestMapping(value = "afficherStation.htm")
+	@RequestMapping(value = "afficherBorne.htm")
 	public void afficherStation(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 
-            StationService stationService = new StationService();
+            BorneService borneService = new BorneService();
 
-            List<StationEntity> listeStations = stationService.consulterListeStations();
+            List<BorneEntity> listeBornes = borneService.consulterListeBornes();
 
-            for(StationEntity station : listeStations) {
-                objectBuilder.add("idStation", station.getIdStation());
-                objectBuilder.add("latitude", station.getLatitude());
-                objectBuilder.add("longitude", station.getLongitude());
-                objectBuilder.add("adresse", station.getAdresse());
-                objectBuilder.add("numero", station.getNumero());
-                objectBuilder.add("ville", station.getVille());
-                objectBuilder.add("codePostal", station.getCodePostal());
+            for(BorneEntity borne : listeBornes) {
+                objectBuilder.add("idBorne", borne.getIdBorne());
+                objectBuilder.add("etatBorne", borne.getEtatBorne());
+                objectBuilder.add("stationBorne", borne.getStation());
+                objectBuilder.add("vehiculeBorne", borne.getVehicule());
 
                 arrayBuilder.add(objectBuilder);
                 objectBuilder = Json.createObjectBuilder();

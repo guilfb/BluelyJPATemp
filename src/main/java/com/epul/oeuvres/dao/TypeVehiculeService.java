@@ -44,4 +44,22 @@ public class TypeVehiculeService extends EntityService {
         }
         return typeVehicule;
     }
+
+    public List<String> consulterListeTypeVehiculesCategories() throws MonException {
+        List<String> mesTypeVehicules = null;
+        try {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+
+            mesTypeVehicules = (List<String>)
+                    entitymanager.createQuery(
+                            "SELECT distinct a.categorie FROM TypeVehiculeEntity a").getResultList();
+            entitymanager.close();
+        }catch (RuntimeException e) {
+            new MonException("Erreur de lecture", e.getMessage());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mesTypeVehicules;
+    }
 }

@@ -9,14 +9,13 @@ public class BorneEntity {
     private int idBorne;
     private byte etatBorne;
     private int station;
-    private int vehicule;
+    private Integer vehicule;
 
     @Id
     @Column(name = "idBorne")
     public int getIdBorne() {
         return idBorne;
     }
-
     public void setIdBorne(int idBorne) {
         this.idBorne = idBorne;
     }
@@ -26,7 +25,6 @@ public class BorneEntity {
     public byte getEtatBorne() {
         return etatBorne;
     }
-
     public void setEtatBorne(byte etatBorne) {
         this.etatBorne = etatBorne;
     }
@@ -36,18 +34,19 @@ public class BorneEntity {
     public int getStation() {
         return station;
     }
-
     public void setStation(int station) {
         this.station = station;
     }
 
     @Basic
     @Column(name = "idVehicule")
-    public int getVehicule() {
-        return vehicule;
+    public Integer getVehicule() {
+        if(vehicule != null) {
+            return vehicule;
+        }
+        return 0;
     }
-
-    public void setVehicule(int vehicule) {
+    public void setVehicule(Integer vehicule) {
         this.vehicule = vehicule;
     }
 

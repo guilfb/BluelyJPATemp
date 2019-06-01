@@ -17,22 +17,25 @@
 	}
 </style>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
-	<script type="text/javascript" src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
-</head>
+<%@include file="header.jsp"%>
 
-</html>
-<body onload="test();">
+<body>
 <%@include file="navigation.jsp"%>
 	<div class="container">
-		<div class="container">
-			<div class="row">
-				<div id="map" style="width:80%; height:80%"></div>
-			</div>
-		</div>
+        <div class="col-sm-2" style="border: 1px solid black">
+            <div id="formType">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="allVehicules" value="ALL" checked>
+                    <label class="form-check-label" for="allVehicules">ALL VEHICULES</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div id="map" style="width:100%; height:80%;"></div>
+        </div>
+        <div class="col-sm-2" style="border: 1px solid black">
+            <p>TEST</p>
+        </div>
     </div>
 <%@include file="footer.jsp"%>
 </body>
@@ -42,8 +45,82 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script>
 
-	function test() {
+    // ICI FAIRE UNE VAR WINDOW TABLEAU 2 DIM POUR STOCKER TOUTE LA TABLE VEHICULE
+    window.categories = [];
+    window.categorieTypeVehicule = [];
+    window.stations = [];
+    window.bornes = [];
+    window.vehicules = [];
 
+    test();
+    remplirWindowTypeVehicule();
+    remplirWindowVehicule();
+    remplirWindowBorne();
+
+    function remplirWindowTypeVehicule() {
+        var i = 0;
+        var j = 0;
+        jQuery.ajax({
+            type: 'POST',
+            url: 'afficherTypeVehicule.htm',
+            success: function (result) {
+                result.forEach(function (value) {
+                    window.categories[i] = value;
+                    if(window.categorieTypeVehicule.indexOf(value.categorie) == -1){
+                        window.categorieTypeVehicule[j] = value.categorie;
+                        j++;
+                    }
+                    i++;
+                });
+            }, complete: function(value){
+                remplirTypeVehicule();
+            }
+        });
+    };
+
+    function remplirWindowBorne() {
+        var i = 0;
+        jQuery.ajax({
+            type: 'POST',
+            url: 'afficherBorne.htm',
+            success: function (result) {
+                result.forEach(function (value) {
+                    window.bornes[i] = value;
+                    console.log(value);
+                    i++;
+                });
+            }, complete: function(value){
+                remplirTypeVehicule();
+            }
+        });
+    };
+
+    function remplirWindowVehicule() {
+        var i = 0;
+        jQuery.ajax({
+            type: 'POST',
+            url: 'afficherVehicule.htm',
+            success: function (result) {
+                result.forEach(function (value) {
+                    window.vehicules[i] = value;
+                    i++;
+                });
+            }, complete: function(value){
+                remplirTypeVehicule();
+            }
+        });
+    };
+
+    function remplirTypeVehicule() {
+        window.categorieTypeVehicule.forEach(function(value) {
+            $("#formType").append("<div class=\"form-check\">\n" +
+                    "<input class=\"form-check-input\" type=\"radio\" name=\"exampleRadios\" id='" + value + "' value='" + value + "'>\n" +
+                    "<label class=\"form-check-label\" for='"+value+"'>" + value + "</label>\n" +
+                "</div>");
+        });
+    };
+
+	function test() {
 		var map = L.map('map', {
 			center: [45.750000, 4.84],
 			zoom: 13
@@ -53,26 +130,18 @@
 			maxZoom: 19
 		});
 		map.addLayer(osmLayer);
-		/*
-		var LeafIcon = L.Icon.extend({
-			options: {
-				iconSize:     [30, 30],
-				iconAnchor:   [22, 94],
-				popupAnchor:  [-3, -76]
-			}
-		});
-		var testIcon = new LeafIcon({iconUrl: './../../resources/images/popup.png'});
-        */
-		jQuery.ajax({
+        var i = 0;
+        console.log("1");
+        jQuery.ajax({
 			type: 'POST',
 			url: 'afficherStation.htm',
 			success: function (result) {
 				result.forEach(function (value) {
-
-					var marker = L.marker([value.latitude, value.longitude]
-                        //, {icon: testIcon}
-                        ).addTo(map)
-							.bindPopup(
+                    window.stations[i] = value;
+                    i++;
+                    var marker = L.marker([value.latitude, value.longitude])
+                            .addTo(map)
+                            .bindPopup(
 							    '<div>' +
                                     '<p>'+value.numero+', '+value.adresse+'</p>' +
                                     '<p>'+value.codePostal+', '+value.ville+'</p>' +

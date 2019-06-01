@@ -15,6 +15,10 @@
 
     <link rel="stylesheet"  type="text/css" href="<c:url value="/resources/css/monStyle.css"/>">
 
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <script type="text/javascript" src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+
     <script language="JavaScript">
         function fermer() {
             window.close();

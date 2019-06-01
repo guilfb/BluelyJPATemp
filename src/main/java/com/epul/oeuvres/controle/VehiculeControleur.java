@@ -1,17 +1,13 @@
 package com.epul.oeuvres.controle;
 
 
-
 import com.epul.oeuvres.dao.BorneService;
-import com.epul.oeuvres.dao.StationService;
+import com.epul.oeuvres.dao.VehiculeService;
 import com.epul.oeuvres.meserreurs.MonException;
 import com.epul.oeuvres.metier.BorneEntity;
-import com.epul.oeuvres.metier.StationEntity;
-
+import com.epul.oeuvres.metier.VehiculeEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -22,31 +18,25 @@ import java.util.List;
 
 
 @Controller
-public class StationControleur {
+public class VehiculeControleur {
 
-    @RequestMapping(value = "map.htm", method = RequestMethod.GET)
-    public ModelAndView Afficheindex(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return new ModelAndView("vues/map");
-    }
-
-	@RequestMapping(value = "afficherStation.htm")
+	@RequestMapping(value = "afficherVehicule.htm")
 	public void afficherStation(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
             JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 
-            StationService stationService = new StationService();
+            VehiculeService vehiculeService = new VehiculeService();
 
-            List<StationEntity> listeStations = stationService.consulterListeStations();
+            List<VehiculeEntity> listeVehicules = vehiculeService.consulterListeVehicules();
 
-            for(StationEntity station : listeStations) {
-                objectBuilder.add("idStation", station.getIdStation());
-                objectBuilder.add("latitude", station.getLatitude());
-                objectBuilder.add("longitude", station.getLongitude());
-                objectBuilder.add("adresse", station.getAdresse());
-                objectBuilder.add("numero", station.getNumero());
-                objectBuilder.add("ville", station.getVille());
-                objectBuilder.add("codePostal", station.getCodePostal());
+            for(VehiculeEntity vehicule : listeVehicules) {
+                objectBuilder.add("idVehicule", vehicule.getIdVehicule());
+                objectBuilder.add("dispoVehicule", vehicule.getDisponibilite());
+                objectBuilder.add("batterieVehicule", vehicule.getEtatBatterie());
+                objectBuilder.add("longitudeVehicule", vehicule.getLatitude());
+                objectBuilder.add("latitudeVehicule", vehicule.getLongitude());
+                objectBuilder.add("rfidVehicule", vehicule.getRfid());
 
                 arrayBuilder.add(objectBuilder);
                 objectBuilder = Json.createObjectBuilder();
