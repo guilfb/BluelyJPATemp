@@ -2,6 +2,7 @@ package com.epul.oeuvres.controle;
 
 import com.epul.oeuvres.dao.Service;
 import com.epul.oeuvres.meserreurs.MonException;
+import com.epul.oeuvres.metier.ClientEntity;
 import com.epul.oeuvres.metier.UtilisateurEntity;
 import com.epul.oeuvres.utilitaires.FonctionsUtiles;
 import org.springframework.stereotype.Controller;
@@ -43,13 +44,13 @@ public class Authentification {
             try {
 
                 Service unService = new Service();
-                UtilisateurEntity unUtilisateur = unService.getUtilisateur(login);
+                ClientEntity unUtilisateur = unService.getUtilisateur(login);
                 if (unUtilisateur != null) {
                     try {
                         String pwdmd5 = FonctionsUtiles.md5(pwd);
-                        if (unUtilisateur.getMotPasse().equals(pwdmd5)) {
+                        if (unUtilisateur.getMotdepasse().equals(pwdmd5)) {
                             HttpSession session = request.getSession();
-                            session.setAttribute("id", unUtilisateur.getNumUtil());
+                            session.setAttribute("id", unUtilisateur.getIdClient());
                             destinationPage = "/index";
                         } else {
                             message = "mot de passe erroné";

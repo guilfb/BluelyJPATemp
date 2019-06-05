@@ -24,7 +24,7 @@ import java.util.List;
 @Controller
 public class StationControleur {
 
-    @RequestMapping(value = "map.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "map2.htm", method = RequestMethod.GET)
     public ModelAndView Afficheindex(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return new ModelAndView("vues/map");
     }

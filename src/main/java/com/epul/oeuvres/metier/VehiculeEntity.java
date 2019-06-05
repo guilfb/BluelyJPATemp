@@ -13,13 +13,13 @@ public class VehiculeEntity {
     private String disponibilite;
     private BigDecimal latitude;
     private BigDecimal longitude;
+    private TypeVehiculeEntity typeVehicule;
 
     @Id
     @Column(name = "idVehicule")
     public int getIdVehicule() {
         return idVehicule;
     }
-
     public void setIdVehicule(int idVehicule) {
         this.idVehicule = idVehicule;
     }
@@ -29,7 +29,6 @@ public class VehiculeEntity {
     public int getRfid() {
         return rfid;
     }
-
     public void setRfid(int rfid) {
         this.rfid = rfid;
     }
@@ -39,7 +38,6 @@ public class VehiculeEntity {
     public Integer getEtatBatterie() {
         return etatBatterie;
     }
-
     public void setEtatBatterie(Integer etatBatterie) {
         this.etatBatterie = etatBatterie;
     }
@@ -49,7 +47,6 @@ public class VehiculeEntity {
     public String getDisponibilite() {
         return disponibilite;
     }
-
     public void setDisponibilite(String disponibilite) {
         this.disponibilite = disponibilite;
     }
@@ -59,7 +56,6 @@ public class VehiculeEntity {
     public BigDecimal getLatitude() {
         return latitude;
     }
-
     public void setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
     }
@@ -69,9 +65,17 @@ public class VehiculeEntity {
     public BigDecimal getLongitude() {
         return longitude;
     }
-
     public void setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "type_vehicule", referencedColumnName = "idtype_vehicule")
+    public TypeVehiculeEntity getTypeVehicule() {
+        return typeVehicule;
+    }
+    public void setTypeVehicule(TypeVehiculeEntity typeVehicule) {
+        this.typeVehicule = typeVehicule;
     }
 
     @Override

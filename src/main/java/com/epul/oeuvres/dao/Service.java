@@ -10,17 +10,17 @@ import javax.persistence.EntityTransaction;
 
 public class Service extends EntityService{
 
-	public UtilisateurEntity getUtilisateur( String login) throws MonException
+	public ClientEntity getUtilisateur( String login) throws MonException
 	{
-		UtilisateurEntity unUtilisateur=null;
+		ClientEntity unClient=null;
 	try {
 		EntityTransaction transac = startTransaction();
 		transac.begin();
 
-		Query query = entitymanager.createNamedQuery("UtilisateurEntity.rechercheNom");
-		query.setParameter("name", login);
-		unUtilisateur = (UtilisateurEntity) query.getSingleResult();
-		if (unUtilisateur == null) {
+		Query query = entitymanager.createNamedQuery("ClientEntity.rechercheNom");
+		query.setParameter("login", login);
+		unClient = (ClientEntity) query.getSingleResult();
+		if (unClient == null) {
 			new MonException("Utilisateur Inconnu", "Erreur ");
 	}
 		entitymanager.close();
@@ -32,7 +32,7 @@ public class Service extends EntityService{
 		} catch (Exception e){
 		new MonException("Erreur de lecture", e.getMessage());
 	}
-		return unUtilisateur;
+		return unClient;
 	}
 
 

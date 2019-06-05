@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "utilisateur", schema = "autolib", catalog = "")
-@NamedQuery(name = "UtilisateurEntity.rechercheNom", query = "select ut  from UtilisateurEntity   ut where ut.nomUtil = :name")
+@NamedQuery(name = "UtilisateurEntity.rechercheNom", query = "select ct  from UtilisateurEntity  ct where ct.nomUtil = :name")
 public class UtilisateurEntity {
     private Integer numUtil;
     private String nomUtil;
@@ -19,7 +19,6 @@ public class UtilisateurEntity {
     public Integer getNumUtil() {
         return numUtil;
     }
-
     public void setNumUtil(Integer numUtil) {
         this.numUtil = numUtil;
     }
@@ -29,7 +28,6 @@ public class UtilisateurEntity {
     public String getNomUtil() {
         return nomUtil;
     }
-
     public void setNomUtil(String nomUtil) {
         this.nomUtil = nomUtil;
     }
@@ -39,7 +37,6 @@ public class UtilisateurEntity {
     public String getMotPasse() {
         return motPasse;
     }
-
     public void setMotPasse(String motPasse) {
         this.motPasse = motPasse;
     }
