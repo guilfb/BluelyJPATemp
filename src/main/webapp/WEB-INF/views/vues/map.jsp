@@ -145,6 +145,7 @@
 							    '<div>' +
                                     '<p>'+value.numero+', '+value.adresse+'</p>' +
                                     '<p>'+value.codePostal+', '+value.ville+'</p>' +
+                                    '<button onclick="window.location.href = \'reserverVehicule.htm\';">Réserver</button>'+
                                 '</div>');
 				});
 			}

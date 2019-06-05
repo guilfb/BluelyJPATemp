@@ -50,6 +50,7 @@ public class Authentification {
                         if (unUtilisateur.getMotPasse().equals(pwdmd5)) {
                             HttpSession session = request.getSession();
                             session.setAttribute("id", unUtilisateur.getNumUtil());
+                            session.setAttribute("nomUtilisateur", unUtilisateur.getNomUtil());
                             destinationPage = "/index";
                         } else {
                             message = "mot de passe erroné";

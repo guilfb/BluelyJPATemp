@@ -2,6 +2,7 @@ package com.epul.oeuvres.dao;
 
 import com.epul.oeuvres.meserreurs.MonException;
 import com.epul.oeuvres.metier.ClientEntity;
+import com.epul.oeuvres.metier.UtilisateurEntity;
 
 import javax.persistence.EntityTransaction;
 import java.util.List;
@@ -27,8 +28,7 @@ public class ClientService extends EntityService {
         return mesClients;
     }
 
-    /* Consultation d'une borne par son numéro
-     */
+
     public ClientEntity consulterClientById(int numero) throws MonException {
         List<ClientEntity> mesClients = null;
         ClientEntity client = new ClientEntity();
@@ -41,6 +41,28 @@ public class ClientService extends EntityService {
                             "SELECT a FROM ClientEntity a " +
                                     "WHERE a.idClient="+numero).getResultList();
             client = mesClients.get(0);
+            entitymanager.close();
+        }catch (RuntimeException e) {
+            new MonException("Erreur de lecture", e.getMessage());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return client;
+    }
+
+    public UtilisateurEntity consulterClientByLogin(String login) throws MonException {
+        List<UtilisateurEntity> mesClients = null;
+        UtilisateurEntity client = new UtilisateurEntity();
+        try {
+            EntityTransaction transac = startTransaction();
+            transac.begin();
+
+            mesClients = (List<UtilisateurEntity>)
+                    entitymanager.createQuery(
+                            "SELECT a FROM UtilisateurEntity a " +
+                                    "WHERE a.nomUtil="+login).getResultList();
+
+           mesClients.get(0);
             entitymanager.close();
         }catch (RuntimeException e) {
             new MonException("Erreur de lecture", e.getMessage());

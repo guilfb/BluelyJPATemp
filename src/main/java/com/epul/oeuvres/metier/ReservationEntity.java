@@ -6,30 +6,29 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "reservation", schema = "autolib", catalog = "")
-@IdClass(ReservationEntityPK.class)
 public class ReservationEntity {
-    private int vehicule;
-    private int client;
+    private VehiculeEntity vehicule;
+    private ClientEntity client;
     private Timestamp dateReservation;
     private Timestamp dateEcheance;
 
-    @Id
-    @Column(name = "vehicule")
-    public int getVehicule() {
+    @ManyToOne
+    @JoinColumn(name = "vehicule", referencedColumnName = "idVehicule", nullable = false)
+    public VehiculeEntity getVehicule() {
         return vehicule;
     }
 
-    public void setVehicule(int vehicule) {
+    public void setVehicule(VehiculeEntity vehicule) {
         this.vehicule = vehicule;
     }
 
-    @Id
-    @Column(name = "client")
-    public int getClient() {
+    @ManyToOne
+    @JoinColumn(name = "client", referencedColumnName = "idClient", nullable = false)
+    public ClientEntity getClient() {
         return client;
     }
 
-    public void setClient(int client) {
+    public void setClient(ClientEntity client) {
         this.client = client;
     }
 
