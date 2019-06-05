@@ -204,7 +204,8 @@
                                 + elem.stationBorne.numAdresseStation + ', '
                                 + elem.stationBorne.adresseStation + '<br />'
                                 + elem.stationBorne.cpStation + ', '
-                                + elem.stationBorne.villeStation + '</p></div>');
+                                + elem.stationBorne.villeStation + '</p>' +
+                                '<button onclick="window.location.href = \'reserverVehicule.htm\';">Réserver</button>' + '</div>');
                         window.marker.push(marker);
                     }
                 }

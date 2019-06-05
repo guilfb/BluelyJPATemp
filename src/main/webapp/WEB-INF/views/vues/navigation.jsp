@@ -67,19 +67,22 @@
                 Se Connecter
                 <span class="caret"></span>
             </a>
+            <a href="creerCompte.htm">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                Créer un compte
+                <span class="caret"></span>
+            </a>
         </c:if>
         <c:if test="${sessionScope.id > 0  }">
+            <li>
+                <c:out value="${sessionScope.nomUtilisateur}"></c:out>
+            </li>
             <li><a href="map.htm">MAP</a></li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <li>
+                <a href="monEspace.htm">
                     <span class="glyphicon glyphicon-user"></span>
-                    Adhérents
-                    <span class="caret"></span>
+                    Mon espace
                 </a>
-                <ul class="dropdown-menu">
-                    <li><a href="ajouterAdherent.htm"><span class="glyphicon glyphicon-plus"></span> Ajout Adhérent</a></li>
-                    <li><a href="listerAdherent.htm"><span class="glyphicon glyphicon-th-list"></span> Lister les adhérents</a></li>
-                </ul>
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"  style="fontSize: 15px;">
