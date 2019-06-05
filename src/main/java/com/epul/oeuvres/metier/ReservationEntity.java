@@ -6,6 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "reservation", schema = "autolib", catalog = "")
+@IdClass(ReservationEntityPK.class)
 public class ReservationEntity {
     private VehiculeEntity vehicule;
     private ClientEntity client;
