@@ -25,25 +25,16 @@ import java.security.NoSuchAlgorithmException;
 @Controller
 public class MultiControleur {
 
-	// /
-	// / Affichage de la page d'accueil
-	// /
 	@RequestMapping(value = "index.htm", method = RequestMethod.GET)
 	public ModelAndView Afficheindex(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return new ModelAndView("index");
 	}
 
-	// /
-	// / Affichage de la page d'accueil
-	// /
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView Afficheindex2(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return new ModelAndView("index");
 	}
 
-	// /
-	// / Affichage de la page d'accueil
-	// /
 	@RequestMapping(value = "erreur.htm", method = RequestMethod.GET)
 	public ModelAndView AfficheErreur(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return new ModelAndView("vues/Erreur");

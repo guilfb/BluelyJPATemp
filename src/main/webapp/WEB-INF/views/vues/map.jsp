@@ -13,23 +13,34 @@
 <body>
 <%@include file="navigation.jsp"%>
 
-<c:if test="${sessionScope.id == null }">
-<script>window.location.href = 'http://localhost:8080/login.htm'</script>
-</c:if>
-
 <c:if test="${sessionScope.id > 0 }">
-	<div class="container">
-        <div class="col-sm-2" style="border: 1px solid black">
-            <div id="formType"></div>
+	<div class="row" style="margin-right: 50px; margin-left: 50px; margin-top: 50px;">
+
+        <div class="col-sm-2">
+            <div name="titreDiv" style="color: black;">Catégorie de véhicule</div>
+            <div id="formType" style="border: 1px solid lightgrey; border-radius: 5px; margin-bottom: 100px;"></div>
+            <div name="titreDiv" style="color: black;">Modèle de véhicule</div>
+            <div id="formVehicule" style="border: 1px solid lightgrey; border-radius: 5px;"></div>
         </div>
+
         <div class="col-sm-8">
             <div id="map" style="width:100%; height:80%;"></div>
         </div>
-        <div class="col-sm-2" style="border: 1px solid black">
-            <div id="formVehicule">
 
+        <div name="titreDiv" style="color: black;">Afficher les véhicules ou les places disponibles.</div>
+        <div class="col-sm-2" style="border: 1px solid lightgrey; border-radius: 5px;">
+            <div id="formParking">
+                <form>
+                    <label class="radio-inline">
+                        <input type="radio" id="reservation" name="optradio" checked>Véhicules
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" id="parking" name="optradio">Parkings
+                    </label>
+                </form>
             </div>
         </div>
+
     </div>
 </c:if>
 <%@include file="footer.jsp"%>
@@ -49,12 +60,14 @@
     window.vehiculeChoisis = [];
     window.stationsAffiche = [];
     window.marker = [];
+    window.nbVehicules = [];
+    window.nbPlaces = [];
+
+    window.url = "";
+
+    window.parking = false;
 
     remplirListes();
-
-    function launch() {
-
-    };
 
     function remplirListes() {
         // Init de toutes les listes
@@ -107,6 +120,26 @@
             return false;
         });
 
+        window.stations.forEach(function(item) {
+            window.nbVehicules[item.idStation - 1] = 0;
+        });
+
+        window.stations.forEach(function(item) {
+            window.nbPlaces[item.idStation - 1] = 0;
+        });
+
+        window.stations.forEach(function(item) {
+            window.bornes.forEach(function(elem) {
+                if(elem.stationBorne.idStation === item.idStation) {
+                    if(elem.etatBorne === 1) {
+                        window.nbVehicules[item.idStation - 1]++;
+                    }else if(elem.etatBorne === 0) {
+                        window.nbPlaces[item.idStation - 1]++;
+                    }
+                }
+            })
+        });
+
         remplirCategVehicule();
     };
 
@@ -139,6 +172,12 @@
         ifCheckedVehicule();
     });
 
+    $('#formParking').change(function() {
+        window.parking = $("input[type='radio'][id='parking']").prop("checked");
+
+        triMarker();
+    });
+
 	function ifChecked() {
 	    window.categAffiche = [];
 	    window.categVehicules.forEach(function(value) {
@@ -163,7 +202,7 @@
         window.categVehicules.forEach(function(value) {
             $("#formType").append("<div class=\"form-check\">\n" +
                 "<input class=\"form-check-input\" type=\"checkbox\" name=\"exampleRadios\" id='" + value.categTV + "' value='" + value.categTV + "' checked=\"checked\">\n" +
-                "<label class=\"form-check-label\" for='"+ value.categTV +"'>" + value.categTV + "</label>\n" +
+                "<label class=\"form-check-label\" style=\"color: grey;\" for='"+ value.categTV +"'>" + value.categTV + "</label>\n" +
                 "</div>");
         });
         ifChecked();
@@ -178,7 +217,7 @@
                 $("#formVehicule").append(
                     "<div class=\"form-check\">\n" +
                     "<input class=\"form-check-input\" type=\"checkbox\" name=\"exampleRadios\" id='" + item.TV + "' value='" + item.TV + "' checked=\"checked\">\n" +
-                    "<label class=\"form-check-label\" for='"+item.TV+"'>" + item.TV + "</label>\n" +
+                    "<label class=\"form-check-label\" style=\"color: grey;\" for='"+item.TV+"'>" + item.TV + "</label>\n" +
                     "</div>");
             }
         });
@@ -193,10 +232,34 @@
         window.stationsAffiche = [];
         var marker;
 
-        window.bornes.forEach(function(elem) {
-            if(elem.vehiculeBorne.idVehicule !== "NO_VEHICULE") {
-                if(window.vehiculeChoisis.indexOf(elem.vehiculeBorne.typeVehicule.TV) !== -1) {
-                    if(window.stationsAffiche.indexOf(elem.stationBorne.idStation) === -1){
+        if(window.parking === false) {
+            window.bornes.forEach(function(elem) {
+                if (elem.vehiculeBorne.idVehicule !== "NO_VEHICULE") {
+                    if (window.vehiculeChoisis.indexOf(elem.vehiculeBorne.typeVehicule.TV) !== -1) {
+                        if (window.stationsAffiche.indexOf(elem.stationBorne.idStation) === -1) {
+                            window.stationsAffiche.push(elem.stationBorne.idStation);
+                            window.url = 'reserverVehicule.htm?idStation='+elem.stationBorne.idStation;
+                            marker = L.marker([elem.stationBorne.latitudeStation, elem.stationBorne.longitudeStation])
+                                .addTo(map)
+                                .bindPopup('<div><p>'
+                                    + elem.stationBorne.numAdresseStation + ', '
+                                    + elem.stationBorne.adresseStation + '<br />'
+                                    + elem.stationBorne.cpStation + ', '
+                                    + elem.stationBorne.villeStation + '<br /><br />'
+                                    + '<img src="./././resources/images/logo_parking.png" alt="Parking Slot" height="50" width="50"> '
+                                    + ' ' + window.nbPlaces[elem.stationBorne.idStation -1] + ' <br />'
+                                    + '<img src="./././resources/images/logo_voiture.png" alt="Vehicule" height="50" width="50"> '
+                                    + window.nbVehicules[elem.stationBorne.idStation -1] + '</p>' +
+                                    '<button id="reservation" onclick="makeUrl();"/>Réserver</button>' + '</div>');
+                            window.marker.push(marker);
+                        }
+                    }
+                }
+            });
+        }else{
+            window.bornes.forEach(function(elem) {
+                if (elem.vehiculeBorne.idVehicule === "NO_VEHICULE") {
+                    if (window.stationsAffiche.indexOf(elem.stationBorne.idStation) === -1) {
                         window.stationsAffiche.push(elem.stationBorne.idStation);
                         marker = L.marker([elem.stationBorne.latitudeStation, elem.stationBorne.longitudeStation])
                             .addTo(map)
@@ -204,13 +267,33 @@
                                 + elem.stationBorne.numAdresseStation + ', '
                                 + elem.stationBorne.adresseStation + '<br />'
                                 + elem.stationBorne.cpStation + ', '
-                                + elem.stationBorne.villeStation + '</p>' +
-                                '<button onclick="window.location.href = \'reserverVehicule.htm\';">Réserver</button>' + '</div>');
+                                + elem.stationBorne.villeStation + '<br /><br />'
+                                + '<img src="./././resources/images/logo_parking.png" alt="Parking Slot" height="50" width="50"> '
+                                + ' ' + window.nbPlaces[elem.stationBorne.idStation -1] + ' <br />'
+                                + '<img src="./././resources/images/logo_voiture.png" alt="Vehicule" height="50" width="50"> '
+                                + window.nbVehicules[elem.stationBorne.idStation -1] + '</p>' );
                         window.marker.push(marker);
                     }
                 }
-            }
+            });
+        }
+    };
+
+	function makeUrl() {
+        var urlTemp = "";
+        var i=0;
+
+        window.typeVehicules.forEach(function(elem) {
+            window.vehiculeChoisis.forEach(function(item) {
+                if(elem.TV === item) {
+                    urlTemp+="&id"+i+"="+elem.idTV;
+                    i++;
+                }
+            });
         });
+
+        var url = window.url + "&idV=" + i + urlTemp;
+        window.location.href = url;
     };
 
 </script>

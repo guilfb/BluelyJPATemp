@@ -19,21 +19,11 @@ import java.security.NoSuchAlgorithmException;
 @Controller
 public class Authentification {
 
-    ///
-    /// Login
-    ////
-
-
     @RequestMapping(value = "login.htm", method = RequestMethod.GET)
     public ModelAndView pageLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return new ModelAndView("vues/formLogin");
     }
 
-    ///
-    //
-    //// Contrôle Login
-    ///
-    ////
     @RequestMapping(value = "controleLogin.htm")
     public ModelAndView controleLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String destinationPage;

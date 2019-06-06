@@ -27,25 +27,6 @@ public class BorneService extends EntityService {
 		return mesBornes;
 	}
 
-	public List<BorneEntity> consulterListeBornesParStation(int numero) throws MonException {
-		List<BorneEntity> mesBornes = null;
-		try
-		{
-			EntityTransaction transac = startTransaction();
-			transac.begin();
-			mesBornes = (List<BorneEntity>)
-					entitymanager.createQuery(
-							"SELECT a FROM BorneEntity a " +
-									"WHERE a.station="+numero).getResultList();
-			entitymanager.close();
-		}catch (RuntimeException e) {
-			new MonException("Erreur de lecture", e.getMessage());
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return mesBornes;
-	}
-
 	public BorneEntity consulterBorneById(int numero) throws MonException {
 		List<BorneEntity> mesBornes = null;
 		BorneEntity borne = new BorneEntity();
@@ -65,5 +46,54 @@ public class BorneService extends EntityService {
 			e.printStackTrace();
 		}
 		return borne;
+	}
+
+
+	public List<BorneEntity> getListBorneByStationWithVehicule(int idStation) throws MonException {
+		List<BorneEntity> mesBornes = null;
+		try {
+			EntityTransaction transac = startTransaction();
+			transac.begin();
+
+			mesBornes = (List<BorneEntity>)
+					entitymanager.createQuery(
+							"SELECT a FROM BorneEntity a " +
+									"WHERE a.station="+idStation).getResultList();
+			entitymanager.close();
+		}catch (RuntimeException e) {
+			new MonException("Erreur de lecture", e.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mesBornes;
+	}
+
+	public int getNbParking(int idStation) throws MonException {
+		List<BorneEntity> mesBornes = null;
+		int nbVehicule = 0;
+
+		try {
+			EntityTransaction transac = startTransaction();
+			transac.begin();
+
+			mesBornes = (List<BorneEntity>)
+					entitymanager.createQuery(
+							"SELECT a FROM BorneEntity a " +
+									"WHERE a.station="+idStation).getResultList();
+
+			if(mesBornes != null) {
+				for(BorneEntity borne: mesBornes) {
+					if(borne.getEtatBorne() == 1) {
+						nbVehicule++;
+					}
+				}
+			}
+			entitymanager.close();
+		}catch (RuntimeException e) {
+			new MonException("Erreur de lecture", e.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return nbVehicule;
 	}
 }
