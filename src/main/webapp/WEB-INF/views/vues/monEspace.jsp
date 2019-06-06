@@ -19,7 +19,6 @@
 					<th class="col-md-4">Date de reservation</th>
 					<th class="col-md-4">Date de rendue</th>
 				</tr>
-
 				<c:forEach items="${mesReservations}" var="item">
 					<tr>
 						<td>${item.vehicule.rfid}</td>

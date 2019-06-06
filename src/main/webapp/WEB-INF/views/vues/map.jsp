@@ -62,9 +62,7 @@
     window.marker = [];
     window.nbVehicules = [];
     window.nbPlaces = [];
-
     window.url = "";
-
     window.parking = false;
 
     remplirListes();
